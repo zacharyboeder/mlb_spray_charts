@@ -10,6 +10,7 @@ baseballsavant.mlb.com makes avaiable the pitch-by-pitch data for every player i
   4. Ensure the variables needed are numeric (cleaning the data)
   5. Plot the scatter plot
   6. Superimpose the image of a baseball field underneath the scatterplot and adjust as needed
+  8. Clean up the aesthetics of the chart
   7. Create a function to replicate spray chart for any player over any number of years
 
 
@@ -24,5 +25,7 @@ baseballsavant.mlb.com makes avaiable the pitch-by-pitch data for every player i
 #Rendering the scatter plot
 
 #Superimposing the field underneath the scatter plot
+
+#Cleaning up the aeshtetics of the image
 
 #Combining into a function called spraychart <- function(player, year)
