@@ -1,0 +1,115 @@
+          #############################################
+          ############### Uploading CSV ###############
+          #############################################
+
+yelich_19 <- read.csv(file.choose())
+
+#Variables needed
+  #hc_x: x-coordinate of ball in play (factor)
+  #hc_y: y-coordinate of ball in play (factor)
+  #bb_type: type of hit ball (factor)
+
+  #We want to replace "null" with NAs in hc_x and hx_y
+  #We want to make hc_x and hc_y a numeric rather than a factor
+  #We can leave bb_type as a factor
+  
+
+          #########################################
+          ################ Cleaning ###############
+          #########################################
+          
+          
+yelich_19$hc_x <- as.numeric(as.character(yelich_19$hc_x))
+yelich_19$hc_y <- as.numeric(as.character(yelich_19$hc_y))
+      #This will yield a warning that NAs were introduced by coercion. This is what we want, 
+      #it replaced the "nulls" which were being viewed as a factor, to a recognized NA
+
+      #Note: If you want to use other variables in this dataset, there are other "nulls" 
+      #and numeric variables they upload as factors
+        
+        
+        
+          ##########################################################    
+          ################ Creating the scatter plot ###############
+          ##########################################################
+          
+          
+          
+library(ggplot2)
+
+#Initial scatter pot
+ggplot(yelich_19, aes(x=hc_x, y=hc_y)) + geom_point()
+      #You can see that clearly the image is upside down. We can fix this by multiplying all of
+      #the y-values by -1
+
+#scatter plot v2
+ggplot(yelich_19, aes(x=hc_x, y=-1*hc_y)) + geom_point()
+
+#Adding meaningful color (by bb_type)
+ggplot(yelich_19, aes(x=hc_x, y=-1*hc_y)) + geom_point(aes(color=bb_type))
+    #Notice, there is a "null" showing up. We can investigate that
+    #Additionally, if you want to color it by a different variable, make sure to duoble
+    #check if it is a factor, you'll need to make it numeric
+    
+    
+          ###################################################   
+          ################ Adding the diamond ###############
+          ###################################################
+          
+
+#Packages
+install.packages("png") #Reading a png
+library(png)
+install.packages("grid") #Adding it to a ggplot
+library(grid)
+
+#Reading in image
+setwd("~/Documents/Zach/R/Baseball/TwinsPics") 
+      #Set the working directory to wherever you 
+      #saved the diamond image, whch is located
+      #in the repository
+      
+img <- readPNG("diamond.png")
+
+
+#Creating an object that can be added to a ggplot
+diamond <- list(annotation_custom(rasterGrob(img, 
+                                             width=unit(1,"npc"),
+                                             height=unit(1,"npc")),-5, 262, -240, 30), 
+                coord_cartesian(xlim=c(0, 250), ylim=c(-215, 0)), 
+                theme_classic())
+                
+
+#Adding it to the scatter plot
+ggplot(yelich_19, aes(x=hc_x, y=-1*hc_y)) + 
+  diamond + 
+  geom_point(aes(color=bb_type))
+  
+
+
+          ###########################################################    
+          ################ Cleaning up the aesthetics ###############
+          ###########################################################    
+
+ggplot(subset(yelich_19, bb_type %in% c("fly_ball", "ground_ball", "line_drive", "popup")), aes(x=hc_x, y=-1*hc_y)) + 
+  diamond + 
+  geom_point(aes(color=bb_type), alpha=0.5, size=3) + 
+  scale_color_manual(name = "Type", values = c("#F8766D", '#00BFC4', "yellow", "blue", "green"), 
+                     labels = c("Fly Ball", "Ground Ball", "Line Drive", "Popup", "NA"), guide='legend')
+                     
+                     
+          ####################################################           
+          ############### Making it a function ###############    
+          ####################################################    
+          
+ spray <- function(df, year){
+  fieldpic <- readPNG("diamond.png")
+  p1 <- ggplot(subset(df, bb_type %in% c("fly_ball", "ground_ball", "line_drive", "popup") & game_year==year), aes(x=hc_x, y=-1*hc_y)) + 
+    diamond + 
+    geom_point(aes(color=bb_type), alpha=0.5, size=3) + 
+    theme_classic() + 
+    scale_color_manual(name = "Type", values = c("#F8766D", '#00BFC4', "yellow", "blue", "green"), 
+                       labels = c("Fly Ball", "Ground Ball", "Line Drive", "Popup", "NA"), guide='legend')
+  
+  return(p1)
+}
