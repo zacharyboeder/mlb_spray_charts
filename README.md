@@ -13,20 +13,7 @@ baseballsavant.mlb.com makes avaiable the pitch-by-pitch data for every player i
   8. Clean up the aesthetics of the chart
   7. Create a function to replicate spray chart for any player over any number of years
 
-
-#Downloading Data
-
-#Uploading Data
-
 #Packages needed
 1. ggplot2
 2. png
 3. grid
-
-#Rendering the scatter plot
-
-#Superimposing the field underneath the scatter plot
-
-#Cleaning up the aeshtetics of the image
-
-#Combining into a function called spraychart <- function(player, year)
