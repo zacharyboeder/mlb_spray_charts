@@ -20,7 +20,8 @@ baseballsavant.mlb.com makes avaiable the pitch-by-pitch data for every player i
 
 #Packages needed
 1. ggplot2
-2. 
+2. png
+3. grid
 
 #Rendering the scatter plot
 
