@@ -106,9 +106,9 @@ ggplot(subset(yelich_19, bb_type %in% c("fly_ball", "ground_ball", "line_drive",
           ############### Making it a function ###############    
           ####################################################    
           
- spray <- function(df, year){
+ spray <- function(df, name, year){
   fieldpic <- readPNG("diamond.png")
-  p1 <- ggplot(subset(df, bb_type %in% c("fly_ball", "ground_ball", "line_drive", "popup") & game_year==year), aes(x=hc_x, y=-1*hc_y)) + 
+  p1 <- ggplot(subset(df, player_name == name & bb_type %in% c("fly_ball", "ground_ball", "line_drive", "popup") & game_year==year), aes(x=hc_x, y=-1*hc_y)) + 
     diamond + 
     geom_point(aes(color=bb_type), alpha=0.5, size=3) + 
     theme(axis.title.x=element_blank(), axis.title.y=element_blank()) + 
@@ -117,3 +117,26 @@ ggplot(subset(yelich_19, bb_type %in% c("fly_ball", "ground_ball", "line_drive",
   
   return(p1)
 }
+
+#You can download  a player's csv from multiple years, as well as downloading
+#multiple players and row-binding them together into one big file. Then you can 
+#Use the function above to choose which player and year you want to look at
+
+#I downloaded Christian Yelich and Nelson Cruz from year 2018, 2019, and 2020. 
+
+yelich <- read.csv(file.choose())
+cruz <- read.csv(file.choose())
+
+#Recall, we need to change the coordinates to numeric
+yelich$hc_x <- as.numeric(as.character(yelich$hc_x))
+yelich$hc_y <- as.numeric(as.character(yelich$hc_y))
+cruz$hc_x <- as.numeric(as.character(cruz$hc_x))
+cruz$hc_y <- as.numeric(as.character(cruz$hc_y))
+
+#Row bind into one data frame
+players <- rbind(yelich, cruz)
+
+#Use the function
+spray(players, "Christian Yelich", 2018)
+spray(players, "Nelson Cruz", 2018)
+
