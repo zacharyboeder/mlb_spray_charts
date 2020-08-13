@@ -97,7 +97,9 @@ ggplot(subset(yelich_19, bb_type %in% c("fly_ball", "ground_ball", "line_drive",
   theme(axis.title.x=element_blank(), axis.title.y=element_blank()) +
   scale_color_manual(name = "Type", values = c("#F8766D", '#00BFC4', "yellow", "blue", "green"), 
                      labels = c("Fly Ball", "Ground Ball", "Line Drive", "Popup", "NA"), guide='legend')
-                     
+                    
+          #Need to view the zoomed image and change the window size to make the 
+          #baseball diamond not look warped
                      
                      
           ####################################################           
